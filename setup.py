@@ -8,7 +8,13 @@ PACKAGE = "pycurl"
 PY_PACKAGE = "curl"
 VERSION = "7.45.2"
 
-import glob, os, re, shlex, sys, subprocess
+import glob
+import os
+import re
+import shlex
+import subprocess
+import sys
+
 from setuptools import setup
 from setuptools.extension import Extension
 
@@ -20,6 +26,8 @@ try:
 except NameError:
     # python 3
     exception_base = Exception
+
+
 class ConfigurationError(exception_base):
     pass
 
@@ -114,7 +122,7 @@ class ExtensionConfiguration(object):
 
     def detect_features(self):
         p = subprocess.Popen((self.curl_config(), '--features'),
-            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout, stderr = p.communicate()
         if p.wait() != 0:
             msg = "Problem running `%s' --features" % self.curl_config()
@@ -227,7 +235,7 @@ class ExtensionConfiguration(object):
             self.library_dirs.append(os.path.join(OPENSSL_DIR, "lib"))
         try:
             p = subprocess.Popen((self.curl_config(), '--version'),
-                stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         except OSError:
             exc = sys.exc_info()[1]
             msg = 'Could not run curl-config: %s' % str(exc)
@@ -241,7 +249,7 @@ class ExtensionConfiguration(object):
         libcurl_version = stdout.decode().strip()
         print("Using %s (%s)" % (self.curl_config(), libcurl_version))
         p = subprocess.Popen((self.curl_config(), '--cflags'),
-            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout, stderr = p.communicate()
         if p.wait() != 0:
             msg = "Problem running `%s' --cflags" % self.curl_config()
@@ -283,7 +291,7 @@ class ExtensionConfiguration(object):
         errtext = ''
         for option in ["--libs", "--static-libs"]:
             p = subprocess.Popen((self.curl_config(), option),
-                stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             stdout, stderr = p.communicate()
             if p.wait() == 0:
                 if optbuf == '':
@@ -303,8 +311,8 @@ class ExtensionConfiguration(object):
                     # ignore stderr and the error exit
                     pass
         if optbuf == "":
-            msg = "Neither curl-config --libs nor curl-config --static-libs" +\
-                " succeeded and produced output"
+            msg = "Neither curl-config --libs nor curl-config --static-libs" + \
+                  " succeeded and produced output"
             if errtext:
                 msg += ":\n" + errtext
             raise ConfigurationError(msg)
@@ -389,7 +397,7 @@ ignore this message.''')
     def detect_ssl_lib_using_curl_config(self):
         ssl_lib_detected = None
         p = subprocess.Popen((self.curl_config(), '--ssl-backends'),
-            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout, stderr = p.communicate()
         if p.wait() != 0:
             # curl-config --ssl-backends is not supported on older curl versions
@@ -451,10 +459,12 @@ ignore this message.''')
         else:
             self.extra_compile_args.append("-DCURL_STATICLIB")
             libcurl_lib_path = os.path.join(curl_dir, "lib", curl_lib_name)
-            self.extra_link_args.extend(["gdi32.lib", "wldap32.lib", "winmm.lib", "ws2_32.lib",])
+            self.extra_link_args.extend(["gdi32.lib", "wldap32.lib", "winmm.lib", "ws2_32.lib", ])
 
         if not os.path.exists(libcurl_lib_path):
-            fail("libcurl.lib does not exist at %s.\nCurl directory must point to compiled libcurl (bin/include/lib subdirectories): %s" %(libcurl_lib_path, curl_dir))
+            fail(
+                "libcurl.lib does not exist at %s.\nCurl directory must point to compiled libcurl (bin/include/lib subdirectories): %s" % (
+                    libcurl_lib_path, curl_dir))
         self.extra_objects.append(libcurl_lib_path)
 
         if scan_argv(self.argv, '--with-openssl') is not None or scan_argv(self.argv, '--with-ssl') is not None:
@@ -471,8 +481,8 @@ ignore this message.''')
 
         if str.find(sys.version, "MSC") >= 0:
             self.extra_compile_args.append("-O2")
-            self.extra_compile_args.append("-GF")        # enable read-only string pooling
-            self.extra_compile_args.append("-WX")        # treat warnings as errors
+            self.extra_compile_args.append("-GF")  # enable read-only string pooling
+            self.extra_compile_args.append("-WX")  # treat warnings as errors
             p = subprocess.Popen(['cl.exe'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             out, err = p.communicate()
             match = re.search(r'Version (\d+)', err.decode().split("\n")[0])
@@ -485,7 +495,6 @@ ignore this message.''')
         configure = configure_windows
     else:
         configure = configure_unix
-
 
     def check_avoid_stdio(self):
         if 'PYCURL_SETUP_OPTIONS' in os.environ and '--avoid-stdio' in os.environ['PYCURL_SETUP_OPTIONS']:
@@ -605,6 +614,7 @@ PRETTY_SSL_LIBS = {
     'sectransp': 'Secure Transport',
 }
 
+
 def get_extension(argv, split_extension_source=False):
     if split_extension_source:
         sources = [
@@ -623,6 +633,8 @@ def get_extension(argv, split_extension_source=False):
             os.path.join("src", "threadsupport.c"),
             os.path.join("src", "util.c"),
         ]
+        if scan_argv(sys.argv, "--with-impersonate") is not None:
+            sources.append(os.path.join("src", "easyimpersonate.c"))
         depends = [
             os.path.join("src", "pycurl.h"),
         ]
@@ -668,7 +680,7 @@ def get_data_files():
         datadir = os.path.join("share", "doc", PACKAGE)
     #
     files = ["AUTHORS", "ChangeLog", "COPYING-LGPL", "COPYING-MIT",
-        "INSTALL.rst", "README.rst", "RELEASE-NOTES.rst"]
+             "INSTALL.rst", "README.rst", "RELEASE-NOTES.rst"]
     if files:
         data_files.append((os.path.join(datadir), files))
     files = glob.glob(os.path.join("examples", "*.py"))
@@ -712,7 +724,7 @@ def check_manifest():
         for file in files:
             if file.endswith('.pyc'):
                 continue
-            rel = os.path.join(root, file)[len(start)+1:]
+            rel = os.path.join(root, file)[len(start) + 1:]
             paths.append(rel)
 
     for path in paths:
@@ -724,7 +736,9 @@ def check_manifest():
         if not included:
             print(path)
 
+
 AUTHORS_PARAGRAPH = 3
+
 
 def check_authors():
     f = open('AUTHORS')
@@ -792,6 +806,7 @@ def gen_docstrings_sources():
         if entry.endswith('.rst'):
             sources += " \\\n\tdoc/docstrings/%s" % entry
     print(sources)
+
 
 ###############################################################################
 
@@ -887,7 +902,7 @@ in COPYING-LGPL_ and COPYING-MIT_ files in the source distribution.
     url="http://pycurl.io/",
     license="LGPL/MIT",
     keywords=['curl', 'libcurl', 'urllib', 'wget', 'download', 'file transfer',
-        'http', 'www'],
+              'http', 'www'],
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: Web Environment',
@@ -907,7 +922,7 @@ in COPYING-LGPL_ and COPYING-MIT_ files in the source distribution.
         'Topic :: Internet :: WWW/HTTP',
     ],
     packages=[PY_PACKAGE],
-    package_dir={ PY_PACKAGE: os.path.join('python', 'curl') },
+    package_dir={PY_PACKAGE: os.path.join('python', 'curl')},
     python_requires='>=3.5',
     platforms='All',
 )
@@ -924,6 +939,7 @@ PycURL Unix options:
  --with-mbedtls                      libcurl is linked against mbedTLS
  --with-wolfssl                      libcurl is linked against wolfSSL
  --with-sectransp                    libcurl is linked against Secure Transport
+ --with-impersonate                  enable the extra curl-impersonate function
 '''
 
 windows_help = '''\
@@ -959,7 +975,8 @@ if __name__ == "__main__":
     elif len(sys.argv) > 1 and sys.argv[1] == 'docstrings-sources':
         gen_docstrings_sources()
     else:
-        if sys.argv[1] not in ['clean'] and (not os.path.exists('src/docstrings.c') or not os.path.exists('src/docstrings.h')):
+        if sys.argv[1] not in ['clean'] and (
+                not os.path.exists('src/docstrings.c') or not os.path.exists('src/docstrings.h')):
             convert_docstrings()
 
         setup_args['data_files'] = get_data_files()

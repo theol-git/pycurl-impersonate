@@ -559,6 +559,9 @@ do_global_cleanup(PyObject *dummy, PyObject *Py_UNUSED(ignored));
 PYCURL_INTERNAL PyObject *
 do_version_info(PyObject *dummy, PyObject *args);
 
+
+PYCURL_INTERNAL PyObject *
+do_curl_impersonate(CurlObject *self, PyObject *args);
 PYCURL_INTERNAL PyObject *
 do_curl_setopt(CurlObject *self, PyObject *args);
 PYCURL_INTERNAL PyObject *

@@ -756,6 +756,7 @@ PYCURL_INTERNAL PyMethodDef curlobject_methods[] = {
     {"perform", (PyCFunction)do_curl_perform, METH_NOARGS, curl_perform_doc},
     {"perform_rb", (PyCFunction)do_curl_perform_rb, METH_NOARGS, curl_perform_rb_doc},
     {"perform_rs", (PyCFunction)do_curl_perform_rs, METH_NOARGS, curl_perform_rs_doc},
+    {"impersonate", (PyCFunction)do_curl_impersonate, METH_VARARGS, curl_setopt_doc},
     {"setopt", (PyCFunction)do_curl_setopt, METH_VARARGS, curl_setopt_doc},
     {"setopt_string", (PyCFunction)do_curl_setopt_string, METH_VARARGS, curl_setopt_string_doc},
     {"unsetopt", (PyCFunction)do_curl_unsetopt, METH_VARARGS, curl_unsetopt_doc},
