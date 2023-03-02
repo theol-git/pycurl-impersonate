@@ -25,6 +25,9 @@ libcurl, including:
 .. _share: https://curl.haxx.se/libcurl/c/libcurl-share.html
 .. _Tornado: http://www.tornadoweb.org/
 
+What this fork changes ?
+------------
+This is a modified version of pycurl that adds access to the extra `impersonate` function defined in curl-impersonate from python. Allowing you to impersonate any browser TLS and headers.
 
 Requirements
 ------------
@@ -69,6 +72,8 @@ Support
 
 For support questions please use `curl-and-python mailing list`_.
 `Mailing list archives`_ are available for your perusal as well.
+
+For curl-impersonate linked issues, feel free to open a github issue, but I do not know if I will have the time to work on this project in the future.
 
 Although not an official support venue, `Stack Overflow`_ has been
 popular with some PycURL users.
