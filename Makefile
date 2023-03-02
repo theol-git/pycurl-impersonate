@@ -58,6 +58,7 @@ DOCSTRINGS_SOURCES = \
 	doc/docstrings/curl_pause.rst \
 	doc/docstrings/curl_perform.rst \
 	doc/docstrings/curl_reset.rst \
+	doc/docstrings/curl_impersonate.rst \
 	doc/docstrings/curl_setopt.rst \
 	doc/docstrings/curl_unsetopt.rst \
 	doc/docstrings/curl_set_ca_certs.rst \
