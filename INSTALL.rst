@@ -40,8 +40,6 @@ IMPERSONATE
 
 A Dockerfile is provided as an example on how to run pycurl with impersonate. Check that if that can help.
 
-A Dockerfile is provided as an example on how to run pycurl with impersonate. Check that if that can help.
-
 First, build and install curl-impersonate from source.
 
 Then, run the setup script adding the curl/include path generated during the build to C_INCLUDE_PATH, setting the curl-config to the generated config and --with-impersonate as a command line argument. Example::
