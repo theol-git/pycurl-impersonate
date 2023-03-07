@@ -37,6 +37,7 @@ e.g. one in /usr/lib and one in /usr/local/lib.
 
 IMPERSONATE
 ^^^
+
 A Dockerfile is provided as an example on how to run pycurl with impersonate. Check that ;)
 
 There are two things to do:
