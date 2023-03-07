@@ -36,19 +36,17 @@ e.g. one in /usr/lib and one in /usr/local/lib.
 
 
 IMPERSONATE
-^^^
+^^^^^^^^^^^
 
-A Dockerfile is provided as an example on how to run pycurl with impersonate. Check that ;)
+A Dockerfile is provided as an example on how to run pycurl with impersonate. Check that if that can help.
 
-There are two things to do:
+A Dockerfile is provided as an example on how to run pycurl with impersonate. Check that if that can help.
 
 First, build and install curl-impersonate from source.
 
 Then, run the setup script adding the curl/include path generated during the build to C_INCLUDE_PATH, setting the curl-config to the generated config and --with-impersonate as a command line argument. Example::
 
-
     C_INCLUDE_PATH="$C_INCLUDE_PATH:/tmp/curl-impersonate/build/curl-X.X.X/include" python setup.py install --with-openssl --curl-config=/usr/local/bin/curl-impersonate-chrome-config
-
 
 If things are not clear, feel free to open an issue.
 
