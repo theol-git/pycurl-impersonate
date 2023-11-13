@@ -1,0 +1,3 @@
+[submodule "pycurl"]
+	path = pycurl
+	url = https://github.com/pycurl/pycurl.git
